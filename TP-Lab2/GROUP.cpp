@@ -1,5 +1,6 @@
 #include "GROUP.h"
 GROUP::GROUP() {
+	GroupNum = 0;
 	AvScore = 0;
 	SubN = 0;
 	MaxSubN = 8;
@@ -8,13 +9,24 @@ GROUP::GROUP() {
 	Subjects = (std::string*) calloc(MaxSubN,sizeof(std::string));
 	Students = (STUDENT**)calloc(MaxStudN, sizeof(STUDENT*));
 }
+GROUP::GROUP(int NewGroupNum, float NewAvScore, unsigned int NewMaxSubN, unsigned int NewMaxStudN) {
+	GroupNum = NewGroupNum;
+	AvScore = NewAvScore;
+	SubN = 0;
+	MaxSubN = NewMaxSubN;
+	StudN = 0;
+	MaxStudN = NewMaxStudN;
+	Subjects = (std::string*)calloc(MaxSubN, sizeof(std::string));
+	Students = (STUDENT**)calloc(MaxStudN, sizeof(STUDENT*));
+}
 GROUP::~GROUP() {
-	for (int i;i < StudN;i++)
+	for (unsigned int i = 0;i < StudN;i++)
 		delete Students[i];
 	free(Students);
 	free(Subjects);
 }
 GROUP::GROUP(GROUP* original) {
+	GroupNum = original->GroupNum;
 	AvScore = original->AvScore;
 	SubN = original->SubN;
 	MaxSubN = original->MaxSubN;
@@ -22,16 +34,19 @@ GROUP::GROUP(GROUP* original) {
 	MaxStudN = original->MaxStudN;
 	Subjects = (std::string*)calloc(MaxSubN, sizeof(std::string));
 	Students = (STUDENT**)calloc(MaxStudN, sizeof(STUDENT*));
-	for (int i=0;i < SubN;i++)
-		Subjects[i] = original->Subjects[i];
-	for (int i=0;i < StudN;i++) {
-		Students[i] = new STUDENT();
-		Students[i]->setFio(original->Students[i]->getFio());
-		for (int j=0; j < 5;j++)
-			Students[i]->setAp(j, Students[i]->getAp(j));
+	if (Subjects)
+		for (unsigned int i=0;i < SubN;i++)
+			Subjects[i] = original->Subjects[i];
+	for (unsigned int i=0;i < StudN;i++) {
+		if (Students) {
+			Students[i] = new STUDENT();
+			Students[i]->setFio(original->Students[i]->getFio());
+			for (unsigned int j=0; j < 5;j++)
+				Students[i]->setAp(j, Students[i]->getAp(j));
+		}
+
 	}
-	for (int i = 0;i < SubN;i++)
-		Subjects[i] = original->Subjects[i];
+
 }
 float GROUP::getAvScore() {
 	return AvScore;
@@ -58,9 +73,62 @@ STUDENT* GROUP::getStudent(unsigned int n) {
 void GROUP::delStudent(unsigned int n) {
 	if (n < StudN) {
 		delete Students[n];
-		for (int i = n + 1;i < StudN;i++)
+		for (unsigned int i = n + 1;i < StudN;i++)
 			Students[i - 1] = Students[i];
 		Students[StudN - 1] = NULL;
 		StudN--;
+	}
+}
+void GROUP::AddStudent(STUDENT* NewStudent, unsigned int n) {
+	this->resize();
+	if (n < StudN) {
+		for (unsigned int i = StudN;i > n;i--) {
+			Students[i] = Students[i - 1];
+		}
+		Students[n] = NewStudent;
+	}
+	else if (n >= StudN) {
+		Students[StudN] = NewStudent;
+	}
+	StudN++;
+}
+void GROUP::resize() {
+	if (StudN == MaxStudN) {
+		MaxStudN *= 2;
+		STUDENT** buf = (STUDENT**)realloc(Students, MaxStudN*sizeof(STUDENT*));
+		free(Students);
+		Students = buf;
+	}
+	if (SubN == MaxSubN) {
+		MaxSubN *= 2;
+		std::string* buf = (std::string*)realloc(Subjects, MaxSubN * sizeof(std::string));
+		free(Students);
+		Subjects = buf;
+	}
+}
+void GROUP::setGroupNum(int NewNum) {
+	GroupNum = NewNum;
+}
+int GROUP::getGroupNum() {
+	return GroupNum;
+}
+void GROUP::AddSubject(std::string NewSubject, unsigned int n) {
+	this->resize();
+	if (n < SubN) {
+		for (unsigned int i = SubN;i > n;i--) {
+			Subjects[i] = Subjects[i - 1];
+		}
+		Subjects[n] = NewSubject;
+	}
+	else if (n >= SubN) {
+		Subjects[StudN] = NewSubject;
+	}
+	SubN++;
+}
+void GROUP::delSubject(unsigned int n) {
+	if (n < SubN) {
+		for (unsigned int i = n + 1;i < SubN;i++)
+			Subjects[i] = Subjects[i - 1];
+		SubN--;
 	}
 }

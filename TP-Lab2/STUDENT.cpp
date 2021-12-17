@@ -4,6 +4,11 @@ STUDENT::STUDENT() {
 	for (int i=0; i < 5;i++)
 		Ap[i] = 0;
 }
+STUDENT::STUDENT(std::string NewFio, int NewAp[5]) {
+	Fio = NewFio;
+	for (int i=0; i < 5;i++)
+		Ap[i] = NewAp[i];
+}
 STUDENT::~STUDENT() {
 }
 STUDENT::STUDENT(STUDENT* original) {
@@ -17,9 +22,13 @@ std::string STUDENT::getFio() {
 void STUDENT::setFio(std::string NewFio) {
 	Fio = NewFio;
 }
-int STUDENT::getAp(int n) {
-	return Ap[n];
+int STUDENT::getAp(unsigned int n) {
+	if (n < 5)
+		return Ap[n];
+	else
+		return 0;
 }
-void STUDENT::setAp(int n, int NewNum) {
-	Ap[n] = NewNum;
+void STUDENT::setAp(unsigned int n, int NewNum) {
+	if (n < 5)
+		Ap[n] = NewNum;
 }
