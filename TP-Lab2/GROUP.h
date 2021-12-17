@@ -8,15 +8,17 @@ class GROUP
 	STUDENT** Students;
 	int SubN;
 	int StudN;
+	int MaxSubN;
+	int MaxStudN;
 public:
 	GROUP();
 	~GROUP();
 	GROUP(GROUP* original);
 	float getAvScore();
-	void setAvScore(float NewAcScore);
-	std::string getSubjects(int n);
-	void setSubjects(int n, std::string NewSubject);
-	STUDENT* getStudent(int n);
-	void delStudent(int n);
+	void setAvScore(float NewAvScore);
+	std::string getSubjects(unsigned int n);
+	void setSubjects(unsigned int n, std::string NewSubject);
+	STUDENT* getStudent(unsigned int n);
+	void delStudent(unsigned int n);
 };
 
