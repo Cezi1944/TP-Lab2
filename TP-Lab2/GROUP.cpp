@@ -132,3 +132,19 @@ void GROUP::delSubject(unsigned int n) {
 		SubN--;
 	}
 }
+unsigned int GROUP::getSubN() {
+	return SubN;
+}
+unsigned int GROUP::getStudN() {
+	return StudN;
+}
+void GROUP::calculateAvScore() {
+	float NewAvScore = 0.0;
+	for (int i = 0;i < StudN;i++) {
+		NewAvScore += Students[i]->AvScore();
+	}
+	if (StudN > 0)
+		AvScore = NewAvScore / StudN;
+	else
+		AvScore = 0.0;
+}

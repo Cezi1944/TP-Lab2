@@ -28,5 +28,8 @@ public:
 	void AddStudent(STUDENT* NewStudent, unsigned int n);
 	void resize();
 	void AddSubject(std::string NewSubject, unsigned int n);
+	unsigned int getSubN();
+	unsigned int getStudN();
+	void calculateAvScore();
 };
 

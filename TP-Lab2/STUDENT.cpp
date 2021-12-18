@@ -4,7 +4,7 @@ STUDENT::STUDENT() {
 	for (int i=0; i < 5;i++)
 		Ap[i] = 0;
 }
-STUDENT::STUDENT(std::string NewFio, int NewAp[5]) {
+STUDENT::STUDENT(std::string NewFio, unsigned int NewAp[5]) {
 	Fio = NewFio;
 	for (int i=0; i < 5;i++)
 		Ap[i] = NewAp[i];
@@ -31,4 +31,7 @@ int STUDENT::getAp(unsigned int n) {
 void STUDENT::setAp(unsigned int n, int NewNum) {
 	if (n < 5)
 		Ap[n] = NewNum;
+}
+float STUDENT::AvScore() {
+	return ((float)(Ap[0] + Ap[1] + Ap[2] + Ap[3] + Ap[4]) / 5);
 }
