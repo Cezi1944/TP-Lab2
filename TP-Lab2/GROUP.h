@@ -5,7 +5,7 @@ class GROUP
 {
 	int GroupNum;
 	float AvScore;
-	std::string* Subjects;
+	std::string** Subjects;
 	STUDENT** Students;
 	unsigned int SubN;
 	unsigned int StudN;
